@@ -1,14 +1,15 @@
 
-//var socket = io();
+var socket = io.connect();
 
-/*socket.on('chat', function(datos){
+socket.on('chat', function(datos){
 	
 	//alert(datos.info);
-	var coment = datos.info;
-	$(".comentarios").append("<p>"+coment+"</p>");
+	var coment = datos.mensaje;
+	color = colores(datos.color);
+	$(".comentarios").append("<p><h5 style='color:"+color+";'>"+datos.user+":</h1>"+coment+"</p>");
 	
 	
-});*/
+});
 
 $(document).ready(function() {
 
@@ -20,17 +21,18 @@ $(document).ready(function() {
 	//
 		$("#logindiv").css("display", "block");
 		$("#login #cancel").click(function() {
-		$(this).parent().parent().hide();
-		});
-		// Login form popup login-button click event.
-		$("#loginbtn").click(function() {
-		var name = $("#username").val();
+			$(this).parent().parent().hide();
+			});
+			// Login form popup login-button click event.
+			$("#loginbtn").click(function() {
+			var name = $("#username").val();
 
-		if (name == ""){
-		alert("Tienes que rellenar el campo");
-		}else{
-		$("#logindiv").css("display", "none");
-		}
+			if (name == ""){
+			alert("Tienes que rellenar el campo");
+			}else{
+			$("#logindiv").css("display", "none");
+			$("#cuadro").css("z-index", "1");
+			}
 		});
 	//funcion para detectar si estas escribiendo
 	$(document).keypress(function(e) {
@@ -41,20 +43,34 @@ $(document).ready(function() {
             }
  
     }); 
-
-		$('.formu').on('submit', function(event){
+	//envio de comentarios y guardado en la bd
+	$('.formu').on('submit', function(event){
 			event.preventDefault();
 			var mensaje = $('.text').val();
-			var usuario= 'sdfds';
+			var usuario= 'iker';
 			var id='3';
-			var color = 'verde';
-			var comentario= {'user':usuario; 'mensaje': mensaje; 'id':id; 'color':color;}
-			db.mensajes.insert({comentario});
+			var color = 'green';
+			var comentario= {'user':usuario, 'mensaje': mensaje, 'id':id, 'color':color};
 			
-			socket.emit('chat', {info: mensaje});
+			//db.mensajes.insert({'user':usuario, 'mensaje': mensaje, 'id':id, 'color':color});
+			
+			socket.emit('chat', {'user':usuario, 'mensaje': mensaje, 'id':id, 'color':color});
 			
 			
-		});
+	});
 	
 
 });
+
+
+
+function colores(color){
+	
+	if(color=='verde'){
+		
+		color='#2EFE2E';
+	}
+	
+	return color;
+	
+}

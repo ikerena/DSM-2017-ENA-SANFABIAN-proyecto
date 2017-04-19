@@ -1,21 +1,22 @@
+
 var express = require('express');
 var app = express();
 
 
-var port =process.env.PORT || 8080;
+//var port =process.env.PORT || 8080;
 app.set('view engine','jade');
 app.use(express.static('public'));
 var server = require('http').createServer(app);
 var io = require('socket.io')(server);
 var bodyParser= require('body-parser');
-var parseUrlEncoded = bodyParser.urlencoded({extended: false});
 var mongoose = require('mongoose');
+var parseUrlEncoded = bodyParser.urlencoded({extended: false});
 
-mongoose.connect('mongodb://localhost/chat' function(err){
+mongoose.connect('mongodb://localhost/chat', function(err){
 	
 	if(!err){
 		
-		console.log(''Se ha conectado a la base de datos);
+		console.log('Se ha conectado a la base de datos');
 	}else{
 		throw err;
 	}
@@ -23,14 +24,6 @@ mongoose.connect('mongodb://localhost/chat' function(err){
 	
 	
 });
-app.listen(8080, function(){
-	
-	console.log('escuchando en el puerto 8080');
-	
-});
-
-
-
 io.on('connection', function(client){
 	
 	console.log('cliente conectado');
@@ -41,11 +34,7 @@ io.on('connection', function(client){
 		
 	});
 	
-	
 });
 
 
-
-
-
-server.listen(port);
+server.listen(8080);
