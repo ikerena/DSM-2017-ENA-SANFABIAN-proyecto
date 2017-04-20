@@ -6,8 +6,8 @@ socket.on('chat', function(datos){
 	//alert(datos.info);
 	var coment = datos.mensaje;
 	color = colores(datos.color);
-	$(".comentarios").append("<p><h5 style='color:"+color+";'>"+datos.user+":</h1>"+coment+"</p>");
-	
+	$(".comentarios").append("<div><h5 style='color:"+color+";'>"+datos.user+":</h5><p>"+coment+"</p></div>");
+	$("p").emoticonize();
 	
 });
 socket.on('escribir', function(datos){
@@ -64,11 +64,11 @@ $(document).ready(function(){
 			var mensaje = $('.text').val();
 			var usuario= 'iker';
 			var id='3';
-			var comentario= {'user':usuario, 'mensaje': mensaje, 'id':id, 'color':color};
+			var comentario= {'user':usuario, 'mensaje': mensaje, 'id':id};
 			
 			//db.mensajes.insert({'user':usuario, 'mensaje': mensaje, 'id':id, 'color':color});
 			
-			socket.emit('chat', {'user':usuario, 'mensaje': mensaje, 'id':id);
+			socket.emit('chat', {'user':usuario, 'mensaje': mensaje, 'id':id});
 			
 			
 	});
