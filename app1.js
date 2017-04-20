@@ -12,6 +12,20 @@ var bodyParser= require('body-parser');
 var mongoose = require('mongoose');
 var parseUrlEncoded = bodyParser.urlencoded({extended: false});
 
+var Schema = mongoose.Schema;
+var ObjectId = Schema.ObjectId;
+var mensaje = new Schema({
+	
+	user: String,
+	mensaje: String,
+	id: Number,
+	color: String,
+	
+	
+});
+var mensaje = mongoose.model('mensaje', mensaje);
+
+
 mongoose.connect('mongodb://localhost/chat', function(err){
 	
 	if(!err){
@@ -24,14 +38,45 @@ mongoose.connect('mongodb://localhost/chat', function(err){
 	
 	
 });
+/*app.get('/nuevo', function(request, response){
+	
+	var m = new mensaje(
+		{
+			user: String,
+			mensaje: String,
+			id: Number,
+			color: String,
+		}
+	);
+	m.save(function(err){
+		
+		if(!err){
+			response.write('creado');
+			response.end();
+		} else{
+			response.write('fallo');
+			response.end();
+		}
+		
+	});
+});*/
 io.on('connection', function(client){
 	
 	console.log('cliente conectado');
 	client.on('chat', function(datos){
 		console.log('enviando mensaje');
+		//db.mensajes.insert({'user':datos.user});
 		io.emit('chat', datos);
 		
 		
+	});
+	client.on('escribir', function(datos){
+		console.log('escribiendo');
+		io.emit('escribir', datos);
+	});
+	client.on('borrar', function(datos){
+		console.log('borrando');
+		io.emit('borrar');
 	});
 	
 });

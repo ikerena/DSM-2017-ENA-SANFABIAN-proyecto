@@ -10,15 +10,22 @@ socket.on('chat', function(datos){
 	
 	
 });
+socket.on('escribir', function(datos){
+	
+	//alert(datos.info);
+	var user = datos.user;
+	$(".comentarios").append("<p id='escribir' style='bottom:1px;'>Iker esta escribiendo</p>");
+	
+	
+});
+socket.on('borrar', function(){
+	
+	$('#escribir').remove();
+	
+	
+});
+$(document).ready(function(){
 
-$(document).ready(function() {
-
-	//introducir usuario y verificarlo
-	//var person = prompt("Please enter your name");
-   // if (person == " ") {
-	//	var person = prompt("Please enter your name");
-   // }
-	//
 		$("#logindiv").css("display", "block");
 		$("#login #cancel").click(function() {
 			$(this).parent().parent().hide();
@@ -35,13 +42,21 @@ $(document).ready(function() {
 			}
 		});
 	//funcion para detectar si estas escribiendo
-	$(document).keypress(function(e) {
+	$("#coment").keydown(function(e){
              
-            
-            if(e.which <= 48 && e.which>=90) {
-                  
-            }
+        
+		var usuario= 'iker';
+		if($('#escribir').length == 0){
+			console.log(e);
+			socket.emit('escribir', {'user':usuario});
+		}
+		
  
+    }); 
+	$("#coment").keyup(function(e) {
+             
+			 socket.emit('borrar');
+            
     }); 
 	//envio de comentarios y guardado en la bd
 	$('.formu').on('submit', function(event){
@@ -49,12 +64,11 @@ $(document).ready(function() {
 			var mensaje = $('.text').val();
 			var usuario= 'iker';
 			var id='3';
-			var color = 'green';
 			var comentario= {'user':usuario, 'mensaje': mensaje, 'id':id, 'color':color};
 			
 			//db.mensajes.insert({'user':usuario, 'mensaje': mensaje, 'id':id, 'color':color});
 			
-			socket.emit('chat', {'user':usuario, 'mensaje': mensaje, 'id':id, 'color':color});
+			socket.emit('chat', {'user':usuario, 'mensaje': mensaje, 'id':id);
 			
 			
 	});
