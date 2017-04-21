@@ -6,15 +6,36 @@ socket.on('chat', function(datos){
 	//alert(datos.info);
 	var coment = datos.mensaje;
 	color = colores(datos.color);
-	$(".comentarios").append("<p><h5 style='color:"+color+";'>"+datos.user+":</h1>"+coment+"</p>");
-	
+	$(".comentarios").append("<div><h5 style='color:"+color+";'>"+datos.user+":</h5><p>"+coment+"</p></div>");
+	$("p").emoticonize();
 	
 });
+//mostramos los ultimos mensajes al conectarnos
+socket.on('ultimos mensajes', function (datos) {
+	console.log('llega');
+		for (var i = 0; i <= datos.length - 1; i++) {
+		  $(".comentarios").append("<div><h5>"+datos[1].user+":</h5><p>"+datos[i].mensaje+"</p></div>");
+		};
+})
 socket.on('escribir', function(datos){
 	
 	//alert(datos.info);
 	var user = datos.user;
-	$(".comentarios").append("<p id='escribir' style='bottom:1px;'>Iker esta escribiendo</p>");
+	$(".comentarios").append("<p id='escribir'>Iker esta escribiendo</p>");
+	
+	
+});
+socket.on('unir', function(datos){
+	
+
+	$(".comentarios").append("<p style='color:yellow;'>"+datos+" se ha unido al chat</p>");
+	
+	
+});
+socket.on('borrar usuario', function(datos){
+	
+
+	$(".comentarios").append("<p style='color:yellow;'>"+datos+" se ha desconectado del chat</p>");
 	
 	
 });
@@ -39,8 +60,11 @@ $(document).ready(function(){
 			}else{
 			$("#logindiv").css("display", "none");
 			$("#cuadro").css("z-index", "1");
+			socket.emit('unir', name);
 			}
 		});
+
+	socket.emit('ultimos mensajes');
 	//funcion para detectar si estas escribiendo
 	$("#coment").keydown(function(e){
              
@@ -64,11 +88,11 @@ $(document).ready(function(){
 			var mensaje = $('.text').val();
 			var usuario= 'iker';
 			var id='3';
-			var comentario= {'user':usuario, 'mensaje': mensaje, 'id':id, 'color':color};
+			var comentario= {'user':usuario, 'mensaje': mensaje, 'id':id};
 			
-			//db.mensajes.insert({'user':usuario, 'mensaje': mensaje, 'id':id, 'color':color});
 			
-			socket.emit('chat', {'user':usuario, 'mensaje': mensaje, 'id':id);
+			
+			socket.emit('chat', {'user':usuario, 'mensaje': mensaje, 'id':id});
 			
 			
 	});

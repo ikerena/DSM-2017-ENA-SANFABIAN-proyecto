@@ -18,8 +18,7 @@ var mensaje = new Schema({
 	
 	user: String,
 	mensaje: String,
-	id: Number,
-	color: String,
+	id: Number
 	
 	
 });
@@ -38,45 +37,71 @@ mongoose.connect('mongodb://localhost/chat', function(err){
 	
 	
 });
-/*app.get('/nuevo', function(request, response){
+
+io.on('connection', function(client){
 	
+	console.log('cliente conectado');
+	//nuevo mensaje
+	client.on('chat', function(datos){
+	console.log('enviando mensaje');
+		//db.mensajes.insert({'user':datos.user});
 	var m = new mensaje(
 		{
-			user: String,
-			mensaje: String,
-			id: Number,
-			color: String,
+			user: datos.user,
+			mensaje: datos.mensaje,
+			id: datos.id
 		}
 	);
 	m.save(function(err){
 		
 		if(!err){
-			response.write('creado');
-			response.end();
+			console.log('guardado');
 		} else{
-			response.write('fallo');
-			response.end();
+			console.log('error guardando');
 		}
 		
 	});
-});*/
-io.on('connection', function(client){
-	
-	console.log('cliente conectado');
-	client.on('chat', function(datos){
-		console.log('enviando mensaje');
-		//db.mensajes.insert({'user':datos.user});
 		io.emit('chat', datos);
 		
 		
 	});
+	//escribiendo
 	client.on('escribir', function(datos){
 		console.log('escribiendo');
 		io.emit('escribir', datos);
 	});
+	//borrar escribiendo
 	client.on('borrar', function(datos){
 		console.log('borrando');
 		io.emit('borrar');
+	});
+	//ultimos mensajes
+	client.on('ultimos mensajes', function(datos){
+		console.log('mostrando ultimos mensajes');
+		mensaje.find(function(err, doc){
+			
+			if(!err){
+				console.log('mostrando');
+				client.emit('ultimos mensajes', doc);
+			} else{
+				console.log('error mostrando');
+			}
+			
+		});
+		
+	});
+	//conexion de usuario
+	client.on('unir', function(nombre){
+
+		client.name=nombre;
+		console.log('cliente conectado');
+		io.emit('unir',client.name);
+	});
+	//desconexion de usuario
+	client.on('disconnect', function(){
+	
+	io.emit('borrar usuario', client.name);
+	
 	});
 	
 });
