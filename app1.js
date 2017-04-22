@@ -61,7 +61,7 @@ io.on('connection', function(client){
 		}
 		
 	});
-		io.emit('chat', datos);
+		client.broadcast.emit('chat', datos);
 		
 		
 	});

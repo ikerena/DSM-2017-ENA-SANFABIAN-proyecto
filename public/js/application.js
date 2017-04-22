@@ -90,7 +90,7 @@ $(document).ready(function(){
 			var id='3';
 			var comentario= {'user':usuario, 'mensaje': mensaje, 'id':id};
 			
-			
+			$(".comentarios").append("<div style='color:green;'><h5>"+usuario+":</h5><p>"+mensaje+"</p></div>");
 			
 			socket.emit('chat', {'user':usuario, 'mensaje': mensaje, 'id':id});
 			
