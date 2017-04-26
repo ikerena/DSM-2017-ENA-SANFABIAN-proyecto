@@ -14,7 +14,7 @@
 	</head>
 	<body style='background-image:url("img/6252.jpg");'>
 	
-		<div class='container' >
+		<div class='col-md-12 container-fluid'>
 		
 		<!--popup login-->
 		<div id="mainform">
@@ -34,26 +34,35 @@
 
 				</div>
 		<!--termina popup login-->
-			<div class="page-header">
-			  <h1>Encabezado de página <small>con un texto secundario</small></h1>
+			
+			  
+			
+			<br />
+			<br />
+			<br />
+			<div class=' col-md-12 col-xs-4 ' id='cuadro' style=' border : solid 1px #ffffff; position: relative; z-index:-1; background-image:url("img/6253.jpg");'>
+				<h1 class=' col-md-12 text-center text-muted'>Sala de chat</h1>
+				<div class=' col-md-9  col-xs-12  comentarios' style=" border : solid 2px #ffffff; background:#000000; color : #ffffff; padding : 4px;  height : 400px; overflow : auto; "></div>
+				<div class=' hidden-xs col-md-3  '>	
+					<div class='col-md-12'>
+						<p style="color: white" >Online</p>
+					</div>
+					<div class='col-md-12  ' id="nickusers" style="border : solid 2px #ffffff; background:#F5F5F5; color : #000000; padding : 4px; width : 100px; height : auto; overflow : auto; "></div>
+						<br />
+						<br />
+				</div>
+			
+				<div class='col-md-12 col-xs-12  ' style="padding : 4px; padding-bottom: 50px; overflow : auto;width : 90%; ">
+					<form action="#" class='formu'>
+					<textarea name="comentarios" rows="2" class='text form-control' id='coment' cols="40" placeholder="Escribe aquí tus comentarios" ></textarea>			  
+					  <input  class="btn btn-default" type="submit" value="enviar" >
+					</form> 
+				</div>
 			</div>
-			<br />
-			<br />
-			<br />
-			<div class='col-md-12' id='cuadro' style='position: relative; z-index:-1;'>
-			<div class='col-md-9 comentarios' style=" border : solid 2px #ff0000; background:#000000; color : #ffffff; padding : 4px; width : 800px; height : 400px; overflow : auto; "></div>
-			<div class='col-md-3' style="border : solid 2px #ff0000; background:#ffffff; color : #000000; padding : 4px; width : 100px; height : 300px; overflow : auto; "></div>
-			<br />
-			<br />
-			</div>
-			<div  style="padding : 4px; overflow : auto; ">
-				<form action="#" class='formu'>
-				<textarea name="comentarios" rows="2" class='text form-control' id='coment' cols="40">Escribe aquí tus comentarios</textarea>			  
-				  <input  class="btn btn-default" type="submit" value="enviar">
-				</form> 
-			</div>
-		</div>
 	
+		</div>
+		
+
 	</body>
 
 

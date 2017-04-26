@@ -2,6 +2,8 @@
 var express = require('express');
 var app = express();
 
+var num_users=0;
+var users=[" "];
 
 //var port =process.env.PORT || 8080;
 app.set('view engine','jade');
@@ -66,9 +68,9 @@ io.on('connection', function(client){
 		
 	});
 	//escribiendo
-	client.on('escribir', function(datos){
+	client.on('escribir', function(){
 		console.log('escribiendo');
-		io.emit('escribir', datos);
+		io.emit('escribir', client.name);
 	});
 	//borrar escribiendo
 	client.on('borrar', function(datos){
@@ -78,7 +80,9 @@ io.on('connection', function(client){
 	//ultimos mensajes
 	client.on('ultimos mensajes', function(datos){
 		console.log('mostrando ultimos mensajes');
-		mensaje.find(function(err, doc){
+	var query = mensaje.find({}).sort({'_id': -1}).limit(50);
+
+		query.exec(function(err, doc){
 			
 			if(!err){
 				console.log('mostrando');
@@ -90,18 +94,29 @@ io.on('connection', function(client){
 		});
 		
 	});
+	
 	//conexion de usuario
 	client.on('unir', function(nombre){
-
-		client.name=nombre;
-		console.log('cliente conectado');
-		io.emit('unir',client.name);
+		
+			num_users=num_users+1;
+			users[num_users]=nombre;
+			client.name=nombre;
+			console.log('cliente conectado');
+			console.log(users[num_users]);
+			io.emit('unir',client.name,users);
+		
+		
 	});
 	//desconexion de usuario
 	client.on('disconnect', function(){
+		num_users=num_users-1;
+		var pos=users.indexOf(client.name);
+		users.splice(pos,1);
+		io.emit('borrar usuario', client.name,users);
 	
-	io.emit('borrar usuario', client.name);
-	
+	});
+	client.on('inicio', function(){		
+		io.emit('inicio', users);
 	});
 	
 });
